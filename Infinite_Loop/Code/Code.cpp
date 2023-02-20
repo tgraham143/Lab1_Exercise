@@ -11,8 +11,13 @@ int main()
 	int choice = 0;
 
 	string name = "";
+
+	/* Age was changed from a string to an int below.
+	It caused problems when trying to increment "age" because it was a string.
+	Changing "age" to an int allowed it to be incremented. */
 	//string age = "";
 	int age = -1;
+
 	string occup = "";
 
 	while (choice != -1)
@@ -26,36 +31,67 @@ int main()
 
 		switch (choice)
 		{
+			/* Handled the valid "-1" as an input option. */
 		case -1:
 			break;
 		case 1:
 			cout << "What is your Name: ";
+			/* Opted to not use "cin" since it only reads in the data up to
+			the first whitespace character. This left data in the input
+			stream that caused problems later if we typed in more than
+			one name. */
 			//cin >> name;
-			cin.ignore();
+
+			/* Cleared the input stream through the '\n' character and read
+			the subsequent data and placed it in "name".
+			Found the solution in Chapter 8, though the random 1000
+			characters maximum to skip seems arbitrary. */
+			cin.ignore(1000, '\n');
 			getline(cin, name);
 			break;
 		case 2:
 			cout << "What is your Age? ";
 			cin >> age;
 
+			/* If we entered non-numeric data for age it failed. For data
+			validation, we checked the failbit flag on the input
+			stream to see if it was set. If so, we return a message to the 
+			user, clear the failbit flag, clear the input stream, and set
+			"age" back to -1. */
 			if (cin.fail()) {
 				cout << "Invalid Age value.\n";
 				cin.clear();
+				cin.ignore(1000, '\n');
 				age = -1;
 			}
 
+			/* In case multiple values were entered, we cleared the input
+			stream through the '\n' character. Found the solution in
+			Chapter 8, though the random 1000 characters maximum to skip
+			seems arbitrary. */
 			cin.ignore(1000, '\n');
 			break;
 		case 3:
 			cout << "What is your Occupation? ";
+			/* Opted to not use "cin" since it only reads in the data up to
+			the first whitespace character. This left data in the input
+			stream that caused problems later if we typed in multiple words. */
 			//cin >> occup;
-			cin.ignore();
+
+			/* Cleared the input stream through the '\n' character and read
+			the subsequent data and placed it in "occup".
+			Found the solution in Chapter 8, though the random 1000
+			characters maximum to skip seems arbitrary. */
+			cin.ignore(1000, '\n');
 			getline(cin, occup);
 			break;
 		default:
 			// Assume Invalid Menu Choice
 			cout << "Sorry that choice is not valid!\n";
 
+			/* If we entered non-numeric data for our menu option it failed.
+			For data validation, we checked the failbit flag on the input
+			stream to see if it was set. If so, we clear the failbit flag. */
 			if (cin.fail()) {
 				cin.clear();
 				cin.ignore(1000, '\n');
